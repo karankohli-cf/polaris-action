@@ -62106,16 +62106,16 @@ exports.readSecurityGateFiltersFromString = readSecurityGateFiltersFromString;
 exports.POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris, do not modify!';
 const POLARIS_PRESENT = 'PRESENT';
 function polarisCreateReviewCommentMessage(issue) {
-    console.log(issue);
     return `${exports.POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
 -->
-# Polaris Issue
-${issue.mainEventDescription} ${issue.localEffect} 
 _${issue.severity} Impact, CWE ${issue.cwe} ${issue.checkerName}_
+${issue.mainEventDescription} ${issue.localEffect} 
+
+Remediation:
 ${issue.remediationEventDescription}
-[View the issue in Polaris](${issue.link})
+[View the issue in Polaris](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
 `;
 }
 exports.polarisCreateReviewCommentMessage = polarisCreateReviewCommentMessage;
