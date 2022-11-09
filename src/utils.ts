@@ -303,11 +303,12 @@ export const POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris
 const POLARIS_PRESENT = 'PRESENT'
 
 export function polarisCreateReviewCommentMessage(issue: IPolarisIssueUnified): string {
+    console.log(issue)
     return `${POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
 -->
-# Polaris Issue - ${issue.name}
+# Polaris Issue
 ${issue.mainEventDescription} ${issue.localEffect} 
 _${issue.severity} Impact, CWE ${issue.cwe} ${issue.checkerName}_
 ${issue.remediationEventDescription}
