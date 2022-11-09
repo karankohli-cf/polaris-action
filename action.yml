@@ -1,47 +1,47 @@
-name: 'Synopsys Polaris Security Testing'
-description: 'Run Coverity SAST via the Polaris platform and provide feedback within GitHub pull requests'
-author: 'Synopsys Inc'
+name: "Synopsys Polaris Security Testing"
+description: "Run Coverity SAST via the Polaris platform and provide feedback within GitHub pull requests"
+author: "Synopsys Inc"
 inputs:
   github-token:
-    description: 'Your GitHub token'
+    description: "Your GitHub token"
     required: true
   polaris-url:
-    description: 'The URL of the Polaris server to be referenced API calls'
+    description: "The URL of the Polaris server to be referenced API calls"
     required: true
   polaris-access-token:
-    description: 'An access token to support API calls'
+    description: "An access token to support API calls"
     required: true
   polaris-command:
     description: 'Command line to pass to the Polaris CLI, will default to "analyze -w"'
     required: false
     default: "analyze -w"
   debug:
-    description: 'Enable verbose debugging mode'
+    description: "Enable verbose debugging mode"
     required: false
     default: "false"
   diagnostic:
-    description: 'Enable diagonstic build artifacts'
+    description: "Enable diagonstic build artifacts"
     required: false
     default: "false"
   polaris-proxy-url:
-    description: 'The URL of Proxy server'
+    description: "The URL of Proxy server"
     required: true
   polaris-proxy-username:
-    description: 'The username for the proxy'
+    description: "The username for the proxy"
     required: true
   polaris-proxy-password:
-    description: 'The password for the proxy'
+    description: "The password for the proxy"
     required: true
   generate-sarif:
-    description: 'Generate SARIF output'
+    description: "Generate SARIF output"
     required: false
   security-gate-filters:
-    description: 'Enable security gate'
+    description: "Enable security gate"
     required: false
   skip-run:
-    description: 'Skip execution of the Polaris CLI command, assume it has been run manually'
+    description: "Skip execution of the Polaris CLI command, assume it has been run manually"
     required: false
 
 runs:
-  using: 'node12'
-  main: 'lib/main.js'
+  using: "node12"
+  main: "dist/index.js"
