@@ -62106,11 +62106,12 @@ exports.readSecurityGateFiltersFromString = readSecurityGateFiltersFromString;
 exports.POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris, do not modify!';
 const POLARIS_PRESENT = 'PRESENT';
 function polarisCreateReviewCommentMessage(issue) {
+    console.log(issue);
     return `${exports.POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
 -->
-# Polaris Issue - ${issue.name}
+# Polaris Issue
 ${issue.mainEventDescription} ${issue.localEffect} 
 _${issue.severity} Impact, CWE ${issue.cwe} ${issue.checkerName}_
 ${issue.remediationEventDescription}
