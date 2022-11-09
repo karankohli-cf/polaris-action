@@ -35,8 +35,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Synopsys Polaris (Full Analysis)
-        uses: karankohli-cf/polaris-report-action@master
+      - name: Synopsys Polaris
+        uses: karankohli-cf/polaris-action@master
         with:
           polaris-url: ${{ secrets.POLARIS_URL }}
           polaris-access-token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
