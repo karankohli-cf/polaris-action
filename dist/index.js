@@ -61169,19 +61169,19 @@ function sleep(ms) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.REPORT_URL = exports.SKIP_RUN = exports.SECURITY_GATE_FILTERS = exports.GENERATE_SARIF = exports.POLARIS_PROXY_PASSWORD = exports.POLARIS_PROXY_USERNAME = exports.POLARIS_PROXY_URL = exports.DIAGNOSTIC = exports.DEBUG = exports.POLARIS_COMMAND = exports.POLARIS_ACCESS_TOKEN = exports.POLARIS_URL = exports.GITHUB_TOKEN = void 0;
 const core_1 = __nccwpck_require__(2186);
-exports.GITHUB_TOKEN = (0, core_1.getInput)('github-token');
-exports.POLARIS_URL = (0, core_1.getInput)('polaris-url');
-exports.POLARIS_ACCESS_TOKEN = (0, core_1.getInput)('polaris-access-token');
-exports.POLARIS_COMMAND = (0, core_1.getInput)('polaris-command');
+exports.GITHUB_TOKEN = (0, core_1.getInput)('github_token');
+exports.POLARIS_URL = (0, core_1.getInput)('polaris_url');
+exports.POLARIS_ACCESS_TOKEN = (0, core_1.getInput)('polaris_access_token');
+exports.POLARIS_COMMAND = (0, core_1.getInput)('polaris_command');
 exports.DEBUG = (0, core_1.getInput)('debug');
 exports.DIAGNOSTIC = (0, core_1.getInput)('diagnostic');
-exports.POLARIS_PROXY_URL = (0, core_1.getInput)('polaris-proxy-url');
-exports.POLARIS_PROXY_USERNAME = (0, core_1.getInput)('polaris-proxy-username');
-exports.POLARIS_PROXY_PASSWORD = (0, core_1.getInput)('polaris-proxy-password');
-exports.GENERATE_SARIF = (0, core_1.getInput)('generate-sarif');
-exports.SECURITY_GATE_FILTERS = (0, core_1.getInput)('security-gate-filters');
-exports.SKIP_RUN = (0, core_1.getInput)('skip-run');
-exports.REPORT_URL = (0, core_1.getInput)('report-url');
+exports.POLARIS_PROXY_URL = (0, core_1.getInput)('polaris_proxy_url');
+exports.POLARIS_PROXY_USERNAME = (0, core_1.getInput)('polaris_proxy_username');
+exports.POLARIS_PROXY_PASSWORD = (0, core_1.getInput)('polaris_proxy_password');
+exports.GENERATE_SARIF = (0, core_1.getInput)('generate_sarif');
+exports.SECURITY_GATE_FILTERS = (0, core_1.getInput)('security_gate_filters');
+exports.SKIP_RUN = (0, core_1.getInput)('skip_run');
+exports.REPORT_URL = (0, core_1.getInput)('report_url');
 
 
 /***/ }),
@@ -62107,6 +62107,7 @@ exports.readSecurityGateFiltersFromString = readSecurityGateFiltersFromString;
 exports.POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris, do not modify!';
 const POLARIS_PRESENT = 'PRESENT';
 function polarisCreateReviewCommentMessage(issue, reportUrl) {
+    const CHECKRUN_URL = "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}";
     return `${exports.POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
@@ -62118,7 +62119,7 @@ Remediation:
 ${issue.remediationEventDescription}
 [View issue details](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
 ***
-🚫 False Positive? [Report](${reportUrl})
+🚫 False Positive? [Report](${reportUrl}&body=${CHECKRUN_URL})
 `;
 }
 exports.polarisCreateReviewCommentMessage = polarisCreateReviewCommentMessage;
