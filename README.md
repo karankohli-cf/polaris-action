@@ -36,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: Synopsys Polaris
-        uses: karankohli-cf/polaris-action@master
+        uses: contentful/polaris-action@master
         with:
           polaris-url: ${{ secrets.POLARIS_URL }}
           polaris-access-token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
@@ -45,5 +45,6 @@ jobs:
           polaris-command: analyze -w
           # Include the security gate filters - what should cause a policy failure
           security-gate-filters: ${{ env.SECURITY_GATE_FILTERS }}
+          report-url: ""
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```

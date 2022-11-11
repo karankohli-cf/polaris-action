@@ -302,7 +302,7 @@ export function readSecurityGateFiltersFromString(securityGateString: string): t
 export const POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris, do not modify!'
 const POLARIS_PRESENT = 'PRESENT'
 
-export function polarisCreateReviewCommentMessage(issue: IPolarisIssueUnified): string {
+export function polarisCreateReviewCommentMessage(issue: IPolarisIssueUnified, reportUrl: string): string {
     return `${POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
@@ -312,7 +312,9 @@ ${issue.mainEventDescription} ${issue.localEffect}
 
 Remediation:
 ${issue.remediationEventDescription}
-[View the issue in Polaris](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
+[View issue details](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
+***
+🚫 False Positive? [Report](${reportUrl})
 `
 }
 

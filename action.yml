@@ -41,6 +41,9 @@ inputs:
   skip-run:
     description: "Skip execution of the Polaris CLI command, assume it has been run manually"
     required: false
+  report-url:
+    description: "URL to report false positives"
+    required: false
 
 runs:
   using: "node12"

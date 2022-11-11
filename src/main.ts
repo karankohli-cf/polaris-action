@@ -51,7 +51,10 @@ import {
   POLARIS_PROXY_PASSWORD,
   POLARIS_PROXY_URL,
   POLARIS_PROXY_USERNAME,
-  POLARIS_URL, SECURITY_GATE_FILTERS, SKIP_RUN
+  POLARIS_URL,
+  SECURITY_GATE_FILTERS,
+  SKIP_RUN,
+  REPORT_URL
 } from "./inputs";
 
 import { context } from "@actions/github";
@@ -393,8 +396,8 @@ async function run(): Promise<void> {
 
         let ignoredOnServer = issue.dismissed
 
-        const reviewCommentBody = polarisCreateReviewCommentMessage(issue)
-        const issueCommentBody = polarisCreateReviewCommentMessage(issue)
+        const reviewCommentBody = polarisCreateReviewCommentMessage(issue, REPORT_URL)
+        const issueCommentBody = polarisCreateReviewCommentMessage(issue, REPORT_URL)
 
         const cwd = path.relative(process.env["GITHUB_WORKSPACE"] || process.cwd(), ".");
         process.env["REVIEWDOG_GITHUB_API_TOKEN"] = core.getInput("github_token");

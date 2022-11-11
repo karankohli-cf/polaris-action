@@ -61167,7 +61167,7 @@ function sleep(ms) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SKIP_RUN = exports.SECURITY_GATE_FILTERS = exports.GENERATE_SARIF = exports.POLARIS_PROXY_PASSWORD = exports.POLARIS_PROXY_USERNAME = exports.POLARIS_PROXY_URL = exports.DIAGNOSTIC = exports.DEBUG = exports.POLARIS_COMMAND = exports.POLARIS_ACCESS_TOKEN = exports.POLARIS_URL = exports.GITHUB_TOKEN = void 0;
+exports.REPORT_URL = exports.SKIP_RUN = exports.SECURITY_GATE_FILTERS = exports.GENERATE_SARIF = exports.POLARIS_PROXY_PASSWORD = exports.POLARIS_PROXY_USERNAME = exports.POLARIS_PROXY_URL = exports.DIAGNOSTIC = exports.DEBUG = exports.POLARIS_COMMAND = exports.POLARIS_ACCESS_TOKEN = exports.POLARIS_URL = exports.GITHUB_TOKEN = void 0;
 const core_1 = __nccwpck_require__(2186);
 exports.GITHUB_TOKEN = (0, core_1.getInput)('github-token');
 exports.POLARIS_URL = (0, core_1.getInput)('polaris-url');
@@ -61181,6 +61181,7 @@ exports.POLARIS_PROXY_PASSWORD = (0, core_1.getInput)('polaris-proxy-password');
 exports.GENERATE_SARIF = (0, core_1.getInput)('generate-sarif');
 exports.SECURITY_GATE_FILTERS = (0, core_1.getInput)('security-gate-filters');
 exports.SKIP_RUN = (0, core_1.getInput)('skip-run');
+exports.REPORT_URL = (0, core_1.getInput)('report-url');
 
 
 /***/ }),
@@ -61709,8 +61710,8 @@ function run() {
                 for (const issue of issuesUnified) {
                     utils_1.logger.info(`Found Polaris Issue ${issue.key} at ${issue.path}:${issue.line}`);
                     let ignoredOnServer = issue.dismissed;
-                    const reviewCommentBody = (0, utils_1.polarisCreateReviewCommentMessage)(issue);
-                    const issueCommentBody = (0, utils_1.polarisCreateReviewCommentMessage)(issue);
+                    const reviewCommentBody = (0, utils_1.polarisCreateReviewCommentMessage)(issue, inputs_1.REPORT_URL);
+                    const issueCommentBody = (0, utils_1.polarisCreateReviewCommentMessage)(issue, inputs_1.REPORT_URL);
                     const cwd = path.relative(process.env["GITHUB_WORKSPACE"] || process.cwd(), ".");
                     process.env["REVIEWDOG_GITHUB_API_TOKEN"] = core.getInput("github_token");
                     yield exec.exec(reviewdog, [
@@ -62105,7 +62106,7 @@ function readSecurityGateFiltersFromString(securityGateString) {
 exports.readSecurityGateFiltersFromString = readSecurityGateFiltersFromString;
 exports.POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris, do not modify!';
 const POLARIS_PRESENT = 'PRESENT';
-function polarisCreateReviewCommentMessage(issue) {
+function polarisCreateReviewCommentMessage(issue, reportUrl) {
     return `${exports.POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
@@ -62115,7 +62116,9 @@ ${issue.mainEventDescription} ${issue.localEffect}
 
 Remediation:
 ${issue.remediationEventDescription}
-[View the issue in Polaris](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
+[View issue details](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
+***
+🚫 False Positive? [Report](${reportUrl})
 `;
 }
 exports.polarisCreateReviewCommentMessage = polarisCreateReviewCommentMessage;
