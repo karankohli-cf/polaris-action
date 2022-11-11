@@ -38,13 +38,13 @@ jobs:
       - name: Synopsys Polaris
         uses: contentful/polaris-action@master
         with:
-          polaris-url: ${{ secrets.POLARIS_URL }}
-          polaris-access-token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          polaris_url: ${{ secrets.POLARIS_URL }}
+          polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
           debug: true
-          generate-sarif: true
-          polaris-command: analyze -w
+          generate_sarif: true
+          polaris_command: analyze -w
           # Include the security gate filters - what should cause a policy failure
-          security-gate-filters: ${{ env.SECURITY_GATE_FILTERS }}
-          report-url: ""
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          security_gate_filters: '{ "severity": ["High", "Medium"] }'
+          report_url: "https://github.com/contentful/security-tools-config/issues/new?title=False%20positive%20in%20Polaris"
 ```

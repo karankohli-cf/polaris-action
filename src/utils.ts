@@ -303,6 +303,7 @@ export const POLARIS_COMMENT_PREFACE = '<!-- Comment managed by Synopsys Polaris
 const POLARIS_PRESENT = 'PRESENT'
 
 export function polarisCreateReviewCommentMessage(issue: IPolarisIssueUnified, reportUrl: string): string {
+    const CHECKRUN_URL = "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
     return `${POLARIS_COMMENT_PREFACE}
 ${issue.key}
 ${POLARIS_PRESENT}
@@ -314,7 +315,7 @@ Remediation:
 ${issue.remediationEventDescription}
 [View issue details](https://cwe.mitre.org/data/definitions/${issue.cwe}.html)
 ***
-🚫 False Positive? [Report](${reportUrl})
+🚫 False Positive? [Report](${reportUrl}&body=${CHECKRUN_URL})
 `
 }
 
