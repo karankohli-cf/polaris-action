@@ -1,7 +1,7 @@
 # Polaris GitHub Action
 
 The Polaris GitHub Action provides a simple approach for adding Polaris SAST scans to your GitHub workflows. The
-action has the ability to run a scan, and provide feedback to developers as part of their pull request. 
+action has the ability to run a scan, and provide feedback to developers as part of their pull request.
 
 ## Quick Start
 
@@ -26,9 +26,6 @@ jobs:
     name: polaris / ubuntu
     runs-on: ubuntu-latest
 
-    env:
-      SECURITY_GATE_FILTERS: '{ "severity": ["High", "Medium"] }'
-
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
@@ -42,7 +39,6 @@ jobs:
           polaris_url: ${{ secrets.POLARIS_URL }}
           polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
           debug: true
-          generate_sarif: true
           polaris_command: analyze -w
           # Include the security gate filters - what should cause a policy failure
           security_gate_filters: '{ "severity": ["High", "Medium"] }'
