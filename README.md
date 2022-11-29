@@ -47,5 +47,5 @@ jobs:
 
 ## Development
 
-Make changes in 'src' folder
-Run npm run package to create dist files
+Make changes in `src` folder
+Run `npm run package` to create dist files
