@@ -119,10 +119,7 @@ async function run(): Promise<void> {
   logger.info('Starting Coverity GitHub Action')
 
   let polarisPolicyCheck;
-  console.log("*******")
-  console.log(FAIL_ON_ERROR)
-  if(FAIL_ON_ERROR){
-   console.log("createe");
+  if(FAIL_ON_ERROR === "true"){
    polarisPolicyCheck = await githubCreateCheck(CHECK_NAME, GITHUB_TOKEN);
   }
   const runnerTmpdir = process.env["RUNNER_TEMP"] || os.tmpdir();
@@ -135,7 +132,7 @@ async function run(): Promise<void> {
   );
 
   try {
-    if (DEBUG) {
+    if (DEBUG === "true") {
       logger.level = 'debug'
       logger.debug(`Enabled debug mode`)
     }

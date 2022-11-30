@@ -61473,10 +61473,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         utils_1.logger.info('Starting Coverity GitHub Action');
         let polarisPolicyCheck;
-        console.log("*******");
-        console.log(inputs_1.FAIL_ON_ERROR);
-        if (inputs_1.FAIL_ON_ERROR) {
-            console.log("createe");
+        if (inputs_1.FAIL_ON_ERROR === "true") {
             polarisPolicyCheck = yield (0, utils_1.githubCreateCheck)(application_constants_1.CHECK_NAME, inputs_1.GITHUB_TOKEN);
         }
         const runnerTmpdir = process.env["RUNNER_TEMP"] || os_1.default.tmpdir();
@@ -61485,7 +61482,7 @@ function run() {
             return yield installer.installReviewdog("latest", tmpdir);
         }));
         try {
-            if (inputs_1.DEBUG) {
+            if (inputs_1.DEBUG === "true") {
                 utils_1.logger.level = 'debug';
                 utils_1.logger.debug(`Enabled debug mode`);
             }
