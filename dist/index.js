@@ -61476,6 +61476,7 @@ function run() {
         console.log("*******");
         console.log(inputs_1.FAIL_ON_ERROR);
         if (inputs_1.FAIL_ON_ERROR) {
+            console.log("createe");
             polarisPolicyCheck = yield (0, utils_1.githubCreateCheck)(application_constants_1.CHECK_NAME, inputs_1.GITHUB_TOKEN);
         }
         const runnerTmpdir = process.env["RUNNER_TEMP"] || os_1.default.tmpdir();

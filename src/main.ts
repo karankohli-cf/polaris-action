@@ -122,6 +122,7 @@ async function run(): Promise<void> {
   console.log("*******")
   console.log(FAIL_ON_ERROR)
   if(FAIL_ON_ERROR){
+   console.log("createe");
    polarisPolicyCheck = await githubCreateCheck(CHECK_NAME, GITHUB_TOKEN);
   }
   const runnerTmpdir = process.env["RUNNER_TEMP"] || os.tmpdir();
