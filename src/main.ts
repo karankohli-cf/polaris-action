@@ -118,8 +118,10 @@ export async function githubGetChangesForPR(github_token: string): Promise<Array
 async function run(): Promise<void> {
   logger.info('Starting Coverity GitHub Action')
 
-  const polarisPolicyCheck = await githubCreateCheck(CHECK_NAME, GITHUB_TOKEN);
-
+  let polarisPolicyCheck;
+  if(FAIL_ON_ERROR){
+   polarisPolicyCheck = await githubCreateCheck(CHECK_NAME, GITHUB_TOKEN);
+  }
   const runnerTmpdir = process.env["RUNNER_TEMP"] || os.tmpdir();
   const tmpdir = await fs.mkdtemp(path.join(runnerTmpdir, "reviewdog-"));
   const reviewdog = await core.group(
@@ -146,11 +148,8 @@ async function run(): Promise<void> {
         securityGateFilters = readSecurityGateFiltersFromString(SECURITY_GATE_FILTERS)
       } catch (error) {
         logger.error(`Unable to parse security gate filters: ${error}`)
-        polarisPolicyCheck.cancelCheck()
+        polarisPolicyCheck?.cancelCheck()
         process.exit(2)
-      }
-      if(!FAIL_ON_ERROR){
-        polarisPolicyCheck.cancelCheck()
       }
     }
     logger.debug(`Security gate filter: ${securityGateFilters}`)
@@ -218,11 +217,11 @@ async function run(): Promise<void> {
         }
         if (changed_files.length == 0 && task_input.should_empty_changeset_fail) {
           logger.error(` Task failed: No changed files were found.`)
-          polarisPolicyCheck.cancelCheck()
+          polarisPolicyCheck?.cancelCheck()
           return;
         } else if (changed_files.length == 0) {
           logger.info("Task finished: No changed files were found.")
-          polarisPolicyCheck.cancelCheck()
+          polarisPolicyCheck?.cancelCheck()
           return;
         }
         const change_set_environment = new ChangeSetEnvironment(logger, process.env);
@@ -256,7 +255,7 @@ async function run(): Promise<void> {
 
     if (!polaris_run_result) {
       logger.error(`Unable to find Polaris run results.`)
-      polarisPolicyCheck.cancelCheck()
+      polarisPolicyCheck?.cancelCheck()
       process.exit(2)
     }
 
@@ -324,6 +323,8 @@ async function run(): Promise<void> {
             issueUnified.events = []
             issueUnified.link = "N/A" // TODO: Fix this up
 
+            console.log(isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
+            console.log(issueUnified.severity)
             if(isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
             issuesUnified.push(issueUnified)
 
@@ -356,7 +357,7 @@ async function run(): Promise<void> {
         let merge_target_branch = process.env["GITHUB_BASE_REF"]
         if (!merge_target_branch) {
           logger.error(`Running on a pull request and cannot find GitHub environment variable GITHUB_BASE_REF`)
-          polarisPolicyCheck.cancelCheck()
+          polarisPolicyCheck?.cancelCheck()
           process.exit(2)
         }
         let branches = await polarisGetBranches(polaris_service, project_id)
@@ -494,14 +495,14 @@ async function run(): Promise<void> {
 
     if (!security_gate_pass) {
       logger.error(`Security gate failure, setting status check to failure`)
-      polarisPolicyCheck.failCheck('Issues found that violate your security gate filters', '')
+      polarisPolicyCheck?.failCheck('Issues found that violate your security gate filters', '')
     } else {
-      polarisPolicyCheck.passCheck('No issues violated your security gate filters', '')
+      polarisPolicyCheck?.passCheck('No issues violated your security gate filters', '')
     }
 
   } catch (unhandledError) {
     logger.debug('Canceling policy check because of an unhandled error.')
-    polarisPolicyCheck.cancelCheck()
+    polarisPolicyCheck?.cancelCheck()
     logger.error(`Failed due to an unhandled error: '${unhandledError}'`)
   }
 }

@@ -61472,7 +61472,10 @@ function run() {
     var _a, _b, _c, _d, _e, _f, _g, _h;
     return __awaiter(this, void 0, void 0, function* () {
         utils_1.logger.info('Starting Coverity GitHub Action');
-        const polarisPolicyCheck = yield (0, utils_1.githubCreateCheck)(application_constants_1.CHECK_NAME, inputs_1.GITHUB_TOKEN);
+        let polarisPolicyCheck;
+        if (inputs_1.FAIL_ON_ERROR) {
+            polarisPolicyCheck = yield (0, utils_1.githubCreateCheck)(application_constants_1.CHECK_NAME, inputs_1.GITHUB_TOKEN);
+        }
         const runnerTmpdir = process.env["RUNNER_TEMP"] || os_1.default.tmpdir();
         const tmpdir = yield fs_1.promises.mkdtemp(path.join(runnerTmpdir, "reviewdog-"));
         const reviewdog = yield core.group("🐶 Installing reviewdog ... https://github.com/reviewdog/reviewdog", () => __awaiter(this, void 0, void 0, function* () {
@@ -61493,11 +61496,8 @@ function run() {
                 }
                 catch (error) {
                     utils_1.logger.error(`Unable to parse security gate filters: ${error}`);
-                    polarisPolicyCheck.cancelCheck();
+                    polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
                     process.exit(2);
-                }
-                if (!inputs_1.FAIL_ON_ERROR) {
-                    polarisPolicyCheck.cancelCheck();
                 }
             }
             utils_1.logger.debug(`Security gate filter: ${securityGateFilters}`);
@@ -61556,12 +61556,12 @@ function run() {
                     }
                     if (changed_files.length == 0 && task_input.should_empty_changeset_fail) {
                         utils_1.logger.error(` Task failed: No changed files were found.`);
-                        polarisPolicyCheck.cancelCheck();
+                        polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
                         return;
                     }
                     else if (changed_files.length == 0) {
                         utils_1.logger.info("Task finished: No changed files were found.");
-                        polarisPolicyCheck.cancelCheck();
+                        polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
                         return;
                     }
                     const change_set_environment = new classes_1.ChangeSetEnvironment(utils_1.logger, process.env);
@@ -61591,7 +61591,7 @@ function run() {
             }
             if (!polaris_run_result) {
                 utils_1.logger.error(`Unable to find Polaris run results.`);
-                polarisPolicyCheck.cancelCheck();
+                polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
                 process.exit(2);
             }
             let issuesUnified = undefined;
@@ -61656,6 +61656,8 @@ function run() {
                             issueUnified.dismissed = false;
                             issueUnified.events = [];
                             issueUnified.link = "N/A"; // TODO: Fix this up
+                            console.log((0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false));
+                            console.log(issueUnified.severity);
                             if ((0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false))
                                 issuesUnified.push(issueUnified);
                             break;
@@ -61682,7 +61684,7 @@ function run() {
                     let merge_target_branch = process.env["GITHUB_BASE_REF"];
                     if (!merge_target_branch) {
                         utils_1.logger.error(`Running on a pull request and cannot find GitHub environment variable GITHUB_BASE_REF`);
-                        polarisPolicyCheck.cancelCheck();
+                        polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
                         process.exit(2);
                     }
                     let branches = yield (0, utils_1.polarisGetBranches)(polaris_service, project_id);
@@ -61798,15 +61800,15 @@ function run() {
             }
             if (!security_gate_pass) {
                 utils_1.logger.error(`Security gate failure, setting status check to failure`);
-                polarisPolicyCheck.failCheck('Issues found that violate your security gate filters', '');
+                polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.failCheck('Issues found that violate your security gate filters', '');
             }
             else {
-                polarisPolicyCheck.passCheck('No issues violated your security gate filters', '');
+                polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.passCheck('No issues violated your security gate filters', '');
             }
         }
         catch (unhandledError) {
             utils_1.logger.debug('Canceling policy check because of an unhandled error.');
-            polarisPolicyCheck.cancelCheck();
+            polarisPolicyCheck === null || polarisPolicyCheck === void 0 ? void 0 : polarisPolicyCheck.cancelCheck();
             utils_1.logger.error(`Failed due to an unhandled error: '${unhandledError}'`);
         }
     });
