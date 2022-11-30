@@ -320,6 +320,7 @@ async function run(): Promise<void> {
             issueUnified.events = []
             issueUnified.link = "N/A" // TODO: Fix this up
 
+            if(isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
             issuesUnified.push(issueUnified)
 
             break
@@ -452,19 +453,19 @@ async function run(): Promise<void> {
         }
       }
 
-      for (const comment of actionReviewComments) {
-        if (coverityIsPresent(comment.body)) {
-          info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
-          githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
-        }
-      }
+      // for (const comment of actionReviewComments) {
+      //   if (coverityIsPresent(comment.body)) {
+      //     info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
+      //     githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
+      //   }
+      // }
 
-      for (const comment of actionIssueComments) {
-        if (comment.body !== undefined && coverityIsPresent(comment.body)) {
-          info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
-          githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
-        }
-      }
+      // for (const comment of actionIssueComments) {
+      //   if (comment.body !== undefined && coverityIsPresent(comment.body)) {
+      //     info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
+      //     githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
+      //   }
+      // }
 
       if (newReviewComments.length > 0) {
         info('Publishing review...')
