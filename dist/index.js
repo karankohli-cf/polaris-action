@@ -61656,9 +61656,7 @@ function run() {
                             issueUnified.dismissed = false;
                             issueUnified.events = [];
                             issueUnified.link = "N/A"; // TODO: Fix this up
-                            console.log((0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false));
-                            console.log(issueUnified.severity);
-                            if ((0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false))
+                            if (!(0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false))
                                 issuesUnified.push(issueUnified);
                             break;
                         }
@@ -61722,7 +61720,7 @@ function run() {
                     const cwd = path.relative(process.env["GITHUB_WORKSPACE"] || process.cwd(), ".");
                     process.env["REVIEWDOG_GITHUB_API_TOKEN"] = core.getInput("github_token");
                     yield exec.exec(reviewdog, [
-                        "-f=polaris",
+                        "-f=rdjson",
                         `-name=polaris`,
                         `-reporter=github-pr-review`,
                         `-filter-mode=added`,

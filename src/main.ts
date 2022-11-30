@@ -323,9 +323,7 @@ async function run(): Promise<void> {
             issueUnified.events = []
             issueUnified.link = "N/A" // TODO: Fix this up
 
-            console.log(isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
-            console.log(issueUnified.severity)
-            if(isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
+            if(!isIssueAllowed(securityGateFilters, issueUnified.severity, issueUnified.cwe, githubIsPullRequest() ? true : false))
             issuesUnified.push(issueUnified)
 
             break
@@ -410,7 +408,7 @@ async function run(): Promise<void> {
         await exec.exec(
           reviewdog,
           [
-            "-f=polaris",
+            "-f=rdjson",
             `-name=polaris`,
             `-reporter=github-pr-review`,
             `-filter-mode=added`,
