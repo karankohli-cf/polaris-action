@@ -61167,7 +61167,7 @@ function sleep(ms) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.REPORT_URL = exports.SKIP_RUN = exports.SECURITY_GATE_FILTERS = exports.GENERATE_SARIF = exports.POLARIS_PROXY_PASSWORD = exports.POLARIS_PROXY_USERNAME = exports.POLARIS_PROXY_URL = exports.DIAGNOSTIC = exports.DEBUG = exports.POLARIS_COMMAND = exports.POLARIS_ACCESS_TOKEN = exports.POLARIS_URL = exports.GITHUB_TOKEN = void 0;
+exports.REPORT_URL = exports.SKIP_RUN = exports.FAIL_ON_ERROR = exports.SECURITY_GATE_FILTERS = exports.GENERATE_SARIF = exports.POLARIS_PROXY_PASSWORD = exports.POLARIS_PROXY_USERNAME = exports.POLARIS_PROXY_URL = exports.DIAGNOSTIC = exports.DEBUG = exports.POLARIS_COMMAND = exports.POLARIS_ACCESS_TOKEN = exports.POLARIS_URL = exports.GITHUB_TOKEN = void 0;
 const core_1 = __nccwpck_require__(2186);
 exports.GITHUB_TOKEN = (0, core_1.getInput)('github_token');
 exports.POLARIS_URL = (0, core_1.getInput)('polaris_url');
@@ -61180,6 +61180,7 @@ exports.POLARIS_PROXY_USERNAME = (0, core_1.getInput)('polaris_proxy_username');
 exports.POLARIS_PROXY_PASSWORD = (0, core_1.getInput)('polaris_proxy_password');
 exports.GENERATE_SARIF = (0, core_1.getInput)('generate_sarif');
 exports.SECURITY_GATE_FILTERS = (0, core_1.getInput)('security_gate_filters');
+exports.FAIL_ON_ERROR = (0, core_1.getInput)('fail_on_error');
 exports.SKIP_RUN = (0, core_1.getInput)('skip_run');
 exports.REPORT_URL = (0, core_1.getInput)('report_url');
 
@@ -61494,6 +61495,9 @@ function run() {
                     utils_1.logger.error(`Unable to parse security gate filters: ${error}`);
                     polarisPolicyCheck.cancelCheck();
                     process.exit(2);
+                }
+                if (!inputs_1.FAIL_ON_ERROR) {
+                    polarisPolicyCheck.cancelCheck();
                 }
             }
             utils_1.logger.debug(`Security gate filter: ${securityGateFilters}`);
