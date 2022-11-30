@@ -61473,6 +61473,8 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         utils_1.logger.info('Starting Coverity GitHub Action');
         let polarisPolicyCheck;
+        console.log("*******");
+        console.log(inputs_1.FAIL_ON_ERROR);
         if (inputs_1.FAIL_ON_ERROR) {
             polarisPolicyCheck = yield (0, utils_1.githubCreateCheck)(application_constants_1.CHECK_NAME, inputs_1.GITHUB_TOKEN);
         }

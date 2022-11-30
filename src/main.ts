@@ -119,6 +119,8 @@ async function run(): Promise<void> {
   logger.info('Starting Coverity GitHub Action')
 
   let polarisPolicyCheck;
+  console.log("*******")
+  console.log(FAIL_ON_ERROR)
   if(FAIL_ON_ERROR){
    polarisPolicyCheck = await githubCreateCheck(CHECK_NAME, GITHUB_TOKEN);
   }
