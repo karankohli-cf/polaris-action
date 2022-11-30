@@ -38,6 +38,12 @@ inputs:
   security-gate-filters:
     description: "Enable security gate"
     required: false
+  fail_on_error:
+    description: |
+      Exit code for reviewdog when errors are found [true,false]
+      Default is `false`.
+    default: "false"
+    required: false
   skip-run:
     description: "Skip execution of the Polaris CLI command, assume it has been run manually"
     required: false

@@ -61652,7 +61652,8 @@ function run() {
                             issueUnified.dismissed = false;
                             issueUnified.events = [];
                             issueUnified.link = "N/A"; // TODO: Fix this up
-                            issuesUnified.push(issueUnified);
+                            if ((0, utils_1.isIssueAllowed)(securityGateFilters, issueUnified.severity, issueUnified.cwe, (0, utils_1.githubIsPullRequest)() ? true : false))
+                                issuesUnified.push(issueUnified);
                             break;
                         }
                     }
@@ -61761,18 +61762,18 @@ function run() {
                         (0, utils_1.githubCreateIssueComment)(inputs_1.GITHUB_TOKEN, issueCommentBody);
                     }
                 }
-                for (const comment of actionReviewComments) {
-                    if ((0, utils_1.coverityIsPresent)(comment.body)) {
-                        (0, core_1.info)(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`);
-                        (0, utils_1.githubUpdateExistingReviewComment)(inputs_1.GITHUB_TOKEN, comment.id, (0, utils_1.coverityCreateNoLongerPresentMessage)(comment.body));
-                    }
-                }
-                for (const comment of actionIssueComments) {
-                    if (comment.body !== undefined && (0, utils_1.coverityIsPresent)(comment.body)) {
-                        (0, core_1.info)(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`);
-                        (0, utils_1.githubUpdateExistingReviewComment)(inputs_1.GITHUB_TOKEN, comment.id, (0, utils_1.coverityCreateNoLongerPresentMessage)(comment.body));
-                    }
-                }
+                // for (const comment of actionReviewComments) {
+                //   if (coverityIsPresent(comment.body)) {
+                //     info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
+                //     githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
+                //   }
+                // }
+                // for (const comment of actionIssueComments) {
+                //   if (comment.body !== undefined && coverityIsPresent(comment.body)) {
+                //     info(`Comment ${comment.id} represents a Coverity issue which is no longer present, updating comment to reflect resolution.`)
+                //     githubUpdateExistingReviewComment(GITHUB_TOKEN, comment.id, coverityCreateNoLongerPresentMessage(comment.body))
+                //   }
+                // }
                 if (newReviewComments.length > 0) {
                     (0, core_1.info)('Publishing review...');
                     (0, utils_1.githubCreateReview)(inputs_1.GITHUB_TOKEN, newReviewComments);

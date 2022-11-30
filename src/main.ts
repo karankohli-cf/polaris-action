@@ -53,6 +53,7 @@ import {
   POLARIS_PROXY_USERNAME,
   POLARIS_URL,
   SECURITY_GATE_FILTERS,
+  FAIL_ON_ERROR,
   SKIP_RUN,
   REPORT_URL
 } from "./inputs";
@@ -147,6 +148,9 @@ async function run(): Promise<void> {
         logger.error(`Unable to parse security gate filters: ${error}`)
         polarisPolicyCheck.cancelCheck()
         process.exit(2)
+      }
+      if(!FAIL_ON_ERROR){
+        polarisPolicyCheck.cancelCheck()
       }
     }
     logger.debug(`Security gate filter: ${securityGateFilters}`)
